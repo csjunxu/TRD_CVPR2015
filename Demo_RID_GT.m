@@ -83,6 +83,7 @@ for i = 1:im_num
     end
     PSNR = [PSNR csnr( IMout*255, IM_GT*255, 0, 0 )];
     SSIM = [SSIM cal_ssim( IMout*255, IM_GT*255, 0, 0 )];
+    fprintf('The final PSNR = %2.4f, SSIM = %2.4f. \n', PSNR(end), SSIM(end));
     imwrite(IMout, ['C:\Users\csjunxu\Desktop\CVPR2017\cc_Results\Real_' method '\' method '_' IMname '.png']);
 end
 mPSNR = mean(PSNR);
