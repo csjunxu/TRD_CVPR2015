@@ -34,7 +34,7 @@ for nSig     =  [ 10 ]
     SSIM = [];
     CCPSNR = [];
     CCSSIM = [];
-        RunTime = [];
+    RunTime = [];
     for i = 1:im_num
         IMin = double(imread(fullfile(TT_Original_image_dir,TT_im_dir(i).name) ));
         IM_GT = double(imread(fullfile(GT_Original_image_dir, GT_im_dir(i).name)));
@@ -46,7 +46,7 @@ for nSig     =  [ 10 ]
         CCSSIM = [CCSSIM cal_ssim( IMin, IM_GT, 0, 0 )];
         fprintf('The initial PSNR = %2.4f, SSIM = %2.4f. \n', CCPSNR(end), CCSSIM(end));
         IMout = zeros(size(IMin));
-                time0 = clock;
+        time0 = clock;
         if nSig == 10
             load JointTraining_7x7_400_180x180_stage=5_sigma=10.mat;
             10
@@ -95,7 +95,7 @@ for nSig     =  [ 10 ]
             IMoutcc = reshape(x_star,h,w);
             IMout(:,:,cc) = IMoutcc;
         end
-                RunTime = [RunTime etime(clock,time0)];
+        RunTime = [RunTime etime(clock,time0)];
         fprintf('Total elapsed time = %f s\n', (etime(clock,time0)) );
         PSNR = [PSNR csnr( IMout, IM_GT, 0, 0 )];
         SSIM = [SSIM cal_ssim( IMout, IM_GT, 0, 0 )];
@@ -106,7 +106,7 @@ for nSig     =  [ 10 ]
     mSSIM = mean(SSIM);
     mCCPSNR = mean(CCPSNR);
     mCCSSIM = mean(CCSSIM);
-        mRunTime = mean(RunTime);
+    mRunTime = mean(RunTime);
     save([write_sRGB_dir method, '_our' num2str(im_num) '.mat'],'nSig','PSNR','mPSNR','SSIM','mSSIM','CCPSNR','mCCPSNR','CCSSIM','mCCSSIM','RunTime','mRunTime');
 end
 
