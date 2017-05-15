@@ -71,7 +71,7 @@ for nSig     =  [20 40 60 80 100]
     mPSNR=mean(PSNR);
     mSSIM=mean(SSIM);
     fprintf('The average PSNR = %2.4f, SSIM = %2.4f. \n', mPSNR,mSSIM);
-    name = sprintf(['C:/Users/csjunxu/Desktop/NIPS2017/W3Results/TNRD/TNRD_nSig' num2str(nSig) '.mat']);
+    name = sprintf(['C:/Users/csjunxu/Desktop/NIPS2017/W3Results/TNRD_nSig' num2str(nSig) '.mat']);
     save(name, 'nSig','PSNR','SSIM','mPSNR','mSSIM');
 end
 
