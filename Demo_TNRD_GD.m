@@ -1,50 +1,36 @@
 
-%--------------------------------------------------------------------------
-clc;
 clear;
-%%% addpath
-addpath('..\RandNoise')
-load RandNoise.mat;
-
-addpath(genpath('./.'))
-method           =  '12';
-ref_folder       =  '..\Ref_Gray';
-den_folder       =  method;
-
-if ~isdir(den_folder)
-    mkdir(den_folder)
-end
-
-noise_levels     =  [10, 25, 35, 50, 75];
-images           =  dir(fullfile(ref_folder,'*.bmp'));
-format compact;
+Original_image_dir  =    'C:\Users\csjunxu\Desktop\Projects\WODL\20images\';
+fpath = fullfile(Original_image_dir, '*.png');
+im_dir  = dir(fpath);
+im_num = length(im_dir);
 
 
-
-for i = 1 : numel(images)
+for nSig     =  [20 40 60 80 100]
     
-    [~, name, exte]  =  fileparts(images(i).name);
-    I =   double(imread( fullfile(ref_folder,images(i).name) ));
-    [R,C] = size(I);
-    for j = 1 : numel(noise_levels)
-        disp([i,j]);
-        nSig             =    noise_levels(j);
+    PSNR = [];
+    SSIM = [];
+    
+    for i = 1 : im_num
         
-        noise_img          =   I+ nSig*RandNoise{i,j};
+        I =   double(imread( fullfile(Original_image_dir, im_dir(i).name) ));
+        [R,C] = size(I);
+        randn('seed',0);
+        nI          =   I+ nSig*randn(size(I));
         
-        if nSig == 10
+        if nSig <= 10
             load JointTraining_7x7_400_180x180_stage=5_sigma=10.mat;
             10
-        elseif nSig == 25
+        elseif nSig <= 25
             load JointTraining_7x7_400_180x180_stage=5_sigma=25.mat;
             25
-        elseif nSig == 35
+        elseif nSig <= 40
             load JointTraining_7x7_400_180x180_stage=5_sigma=35.mat;
             35
-        elseif nSig == 50
+        elseif nSig <= 60
             load JointTraining_7x7_400_180x180_stage=5_sigma=50.mat;
             50
-        elseif nSig == 75
+        elseif nSig <= 80
             load JointTraining_7x7_400_180x180_stage=5_sigma=75.mat;
             75
         end
@@ -66,9 +52,8 @@ for i = 1 : numel(images)
         KernelPara.basis = BASIS;
         trained_model = save_trained_model(cof, MFS, stage, KernelPara);
         
-        
-        input = pad(noise_img);
-        noisy = pad(noise_img);
+        input = pad(nI);
+        noisy = pad(nI);
         for s = 1:stage
             deImg = denoisingOneStepGMixMFs(noisy, input, trained_model{s});
             t = crop(deImg);
@@ -77,10 +62,17 @@ for i = 1 : numel(images)
         end
         x_star = max(0, min(t(:), 255));
         im = reshape(x_star,R,C);
-        imwrite(im/255, fullfile(den_folder, [name, num2str(j), method,exte] ));
-        
-        
+        imname = sprintf('C:/Users/csjunxu/Desktop/NIPS2017/W3Results/TNRD/TNRD_nSig%d_%s', nSig, im_dir(i).name);
+        PSNR = [PSNR  csnr( im, I, 0, 0 )];
+        SSIM  = [SSIM cal_ssim( im, I, 0, 0 )];
+        imwrite(im/255, imname);
+        fprintf('%s : PSNR = %2.4f, SSIM = %2.4f \n', im_dir(i).name, PSNR(end), SSIM(end)  );
     end
+    mPSNR=mean(PSNR);
+    mSSIM=mean(SSIM);
+    fprintf('The average PSNR = %2.4f, SSIM = %2.4f. \n', mPSNR,mSSIM);
+    name = sprintf(['C:/Users/csjunxu/Desktop/NIPS2017/W3Results/TNRD/TNRD_nSig' num2str(nSig) '.mat']);
+    save(name, 'nSig','PSNR','SSIM','mPSNR','mSSIM');
 end
 
 
