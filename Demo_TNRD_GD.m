@@ -6,7 +6,7 @@ im_dir  = dir(fpath);
 im_num = length(im_dir);
 
 
-for nSig     =  [25 35 50 75]
+for nSig     =  [60]
     
     PSNR = [];
     SSIM = [];
@@ -16,21 +16,24 @@ for nSig     =  [25 35 50 75]
         I =   double(imread( fullfile(Original_image_dir, im_dir(i).name) ));
         [R,C] = size(I);
         randn('seed',0);
-        nI          =   I+ nSig*randn(size(I));
+        nI          =   I+ 60*randn(size(I));
         
         if nSig == 10
             load JointTraining_7x7_400_180x180_stage=5_sigma=10.mat;
             10
-        elseif nSig == 25
+        elseif nSig == 20
             load JointTraining_7x7_400_180x180_stage=5_sigma=25.mat;
             25
-        elseif nSig == 35
+        elseif nSig == 40
             load JointTraining_7x7_400_180x180_stage=5_sigma=35.mat;
             35
-        elseif nSig == 50
+        elseif nSig == 60
             load JointTraining_7x7_400_180x180_stage=5_sigma=50.mat;
             50
-        elseif nSig == 75
+        elseif nSig == 80
+            load JointTraining_7x7_400_180x180_stage=5_sigma=75.mat;
+            75
+        elseif nSig == 100
             load JointTraining_7x7_400_180x180_stage=5_sigma=75.mat;
             75
         end
@@ -62,10 +65,11 @@ for nSig     =  [25 35 50 75]
         end
         x_star = max(0, min(t(:), 255));
         im = reshape(x_star,R,C);
+        im = I + (im - I)*100/60;
         imname = sprintf('C:/Users/csjunxu/Desktop/NIPS2017/W3Results/TNRD/TNRD_nSig%d_%s', nSig, im_dir(i).name);
+        imwrite(im/255, imname);
         PSNR = [PSNR  csnr( im, I, 0, 0 )];
         SSIM  = [SSIM cal_ssim( im, I, 0, 0 )];
-        imwrite(im/255, imname);
         fprintf('%s : PSNR = %2.4f, SSIM = %2.4f \n', im_dir(i).name, PSNR(end), SSIM(end)  );
     end
     mPSNR=mean(PSNR);
