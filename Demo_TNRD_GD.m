@@ -6,7 +6,7 @@ im_dir  = dir(fpath);
 im_num = length(im_dir);
 
 
-for nSig     =  [20 40 60 80 100]
+for nSig     =  [25 40 60 80 100]
     
     PSNR = [];
     SSIM = [];
