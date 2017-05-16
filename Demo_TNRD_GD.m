@@ -6,7 +6,7 @@ im_dir  = dir(fpath);
 im_num = length(im_dir);
 
 
-for nSig     =  [25 40 60 80 100]
+for nSig     =  [25 35 50 75]
     
     PSNR = [];
     SSIM = [];
@@ -18,19 +18,19 @@ for nSig     =  [25 40 60 80 100]
         randn('seed',0);
         nI          =   I+ nSig*randn(size(I));
         
-        if nSig <= 10
+        if nSig == 10
             load JointTraining_7x7_400_180x180_stage=5_sigma=10.mat;
             10
-        elseif nSig <= 25
+        elseif nSig == 25
             load JointTraining_7x7_400_180x180_stage=5_sigma=25.mat;
             25
-        elseif nSig <= 40
+        elseif nSig == 35
             load JointTraining_7x7_400_180x180_stage=5_sigma=35.mat;
             35
-        elseif nSig <= 60
+        elseif nSig == 50
             load JointTraining_7x7_400_180x180_stage=5_sigma=50.mat;
             50
-        elseif nSig <= 80
+        elseif nSig == 75
             load JointTraining_7x7_400_180x180_stage=5_sigma=75.mat;
             75
         end
