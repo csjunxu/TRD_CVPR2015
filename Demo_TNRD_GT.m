@@ -31,7 +31,6 @@ write_sRGB_dir =  ['C:/Users/csjunxu/Desktop/CVPR2018 Denoising/PolyU_Results/' 
 if ~isdir(write_sRGB_dir)
     mkdir(write_sRGB_dir)
 end
-format compact;
 
 for nSig     =  [ 10 ]
     PSNR = [];
