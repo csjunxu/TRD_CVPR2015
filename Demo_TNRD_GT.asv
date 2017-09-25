@@ -27,7 +27,7 @@ im_num = length(TT_im_dir);
 
 method           =  'TNRD';
 write_MAT_dir = ['C:/Users/csjunxu/Desktop/CVPR2018 Denoising/PolyU_Results/'];
-write_sRGB_dir =  ['C:/Users/csjunxu/Desktop/CVPR2018 Denoising/PolyU_Results/' method];
+write_sRGB_dir = ['C:/Users/csjunxu/Desktop/CVPR2018 Denoising/PolyU_Results/' method];
 if ~isdir(write_sRGB_dir)
     mkdir(write_sRGB_dir)
 end
@@ -104,13 +104,13 @@ for nSig     =  [ 10 ]
         PSNR = [PSNR csnr( IMout, IM_GT, 0, 0 )];
         SSIM = [SSIM cal_ssim( IMout, IM_GT, 0, 0 )];
         fprintf('The final PSNR = %2.4f, SSIM = %2.4f. \n', PSNR(end), SSIM(end));
-        imwrite(IMout/255, [write_sRGB_dir '/' method '_our_' IMname '.png']);
+        imwrite(IMout/255, [write_sRGB_dir '/' method '_our' num2str(im_num) '_' IMname '.png']);
     end
     mPSNR = mean(PSNR);
     mSSIM = mean(SSIM);
     mnPSNR = mean(nPSNR);
     mnSSIM = mean(nSSIM);
     mRunTime = mean(RunTime);
-    save([write_MAT_dir method, '_our.mat'],'nSig','PSNR','mPSNR','SSIM','mSSIM','nPSNR','mnPSNR','nSSIM','mnSSIM','RunTime','mRunTime');
+    save([write_sRGB_dir method, '_our' num2str(im_num) '.mat'],'nSig','PSNR','mPSNR','SSIM','mSSIM','CCPSNR','mCCPSNR','CCSSIM','mCCSSIM','RunTime','mRunTime');
 end
 
