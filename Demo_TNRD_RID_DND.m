@@ -48,6 +48,7 @@ for nSig     =  [ 10 ]
             IMinname = [S{1} '_' num2str(j)];
             IMin = 255*InoisySRGB(info(i).boundingboxes(j,1):info(i).boundingboxes(j,3),info(i).boundingboxes(j,2):info(i).boundingboxes(j,4),1:3);
             IM_GT = IMin;
+            clear InoisySRGB;
             IMout = zeros(size(IMin));
             for cc = 1:ch
                 %% default setting
