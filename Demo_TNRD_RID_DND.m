@@ -1,14 +1,17 @@
 clear;
-Original_image_dir = 'C:\Users\csjunxu\Desktop\CVPR2018 Denoising\dnd_2017\images_srgb\';
+% Original_image_dir = 'C:\Users\csjunxu\Desktop\CVPR2018 Denoising\dnd_2017\images_srgb\';
+Original_image_dir = '../dnd_2017/images_srgb/';
 fpath = fullfile(Original_image_dir, '*.mat');
 im_dir  = dir(fpath);
 im_num = length(im_dir);
-load 'C:\Users\csjunxu\Desktop\CVPR2018 Denoising\dnd_2017\info.mat';
+load '../dnd_2017/info.mat';
 
 method = 'TNRD';
 % write image directory
-write_MAT_dir = ['C:/Users/csjunxu/Desktop/CVPR2018 Denoising/dnd_2017Results/'];
-write_sRGB_dir = ['C:/Users/csjunxu/Desktop/CVPR2018 Denoising/dnd_2017Results/' method];
+% write_MAT_dir = ['C:/Users/csjunxu/Desktop/CVPR2018 Denoising/dnd_2017Results/'];
+% write_sRGB_dir = ['C:/Users/csjunxu/Desktop/CVPR2018 Denoising/dnd_2017Results/' method];
+write_MAT_dir = ['../dnd_2017Results/'];
+write_sRGB_dir = ['../dnd_2017Results/' method];
 if ~isdir(write_sRGB_dir)
     mkdir(write_sRGB_dir)
 end
@@ -69,12 +72,4 @@ for i = 1:im_num
     end
     clear InoisySRGB;
 end
-mPSNR = mean(PSNR);
-mSSIM = mean(SSIM);
-mnPSNR = mean(nPSNR);
-mnSSIM = mean(nSSIM);
-mRunTime = mean(RunTime);
-matname = sprintf([write_MAT_dir method '_DND.mat']);
-save(matname,'PSNR','SSIM','mPSNR','mSSIM','nPSNR','nSSIM','mnPSNR','mnSSIM','RunTime','mRunTime');
-
 
