@@ -1,4 +1,5 @@
 clear;
+maxNumCompThreads(1);
 % Original_image_dir = 'C:\Users\csjunxu\Desktop\CVPR2018 Denoising\dnd_2017\images_srgb\';
 Original_image_dir = '../dnd_2017/images_srgb/';
 fpath = fullfile(Original_image_dir, '*.mat');
@@ -70,6 +71,5 @@ for i = 1:im_num
         fprintf('The final PSNR = %2.4f, SSIM = %2.4f. \n', PSNR(end), SSIM(end));
         imwrite(IMou/255, [write_sRGB_dir '/' method '_DND_' IMname '.png']);
     end
-    clear InoisySRGB;
 end
 
