@@ -13,8 +13,8 @@ if ~isdir(write_sRGB_dir)
     mkdir(write_sRGB_dir)
 end
 
-nSig = 10;
-load JointTraining_7x7_400_180x180_stage=5_sigma=10.mat;
+nSig = 15;
+eval(['load JointTraining_7x7_400_180x180_stage=5_sigma=' num2str(nSig) '.mat']);
 
 PSNR = [];
 SSIM = [];
@@ -24,7 +24,7 @@ RunTime = [];
 for i = 1:im_num
     load(fullfile(Original_image_dir, im_dir(i).name));
     S = regexp(im_dir(i).name, '\.', 'split');
-%     [h,w,ch] = size(InoisySRGB);
+    %     [h,w,ch] = size(InoisySRGB);
     for j = 1:size(info(1).boundingboxes,1)
         time0 = clock;
         bb = info(i).boundingboxes(j,:);
@@ -33,7 +33,6 @@ for i = 1:im_num
         %  IMin = 255*InoisySRGB(bb(1):bb(3), bb(2):bb(4),1:3);
         IMin = double(imread([Original_image_dir method '_DND_' IMname '.png']));
         [h,w,ch] = size(IMin);
-        
         IM_GT = IMin;
         IMout = zeros(size(IMin));
         for cc = 1:ch
@@ -55,6 +54,8 @@ for i = 1:im_num
             trained_model = save_trained_model(cof, MFS, stage, KernelPara);
             input = pad(IMin(:,:,cc));
             noisy = pad(IMin(:,:,cc));
+            nSig = NoiseEstimation(input, 8);
+            fprintf('The noise level is %2.2f. \n', nSig);
             for s = 1:stage
                 deImg = denoisingOneStepGMixMFs(noisy, input, trained_model{s});
                 t = crop(deImg);
