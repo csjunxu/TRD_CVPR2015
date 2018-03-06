@@ -31,7 +31,7 @@ for i = 1:im_num
         IMname = [S{1} '_' num2str(j)];
         
         %  IMin = 255*InoisySRGB(bb(1):bb(3), bb(2):bb(4),1:3);
-        IMin = double(imread([Original_image_dir method '_DND_' IMname '.png']));
+        IMin = double(imread([Original_image_dir IMname '.png']));
         [h,w,ch] = size(IMin);
         IM_GT = IMin;
         IMout = zeros(size(IMin));

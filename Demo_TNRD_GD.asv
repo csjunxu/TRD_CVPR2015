@@ -11,7 +11,6 @@ writefilepath  = [writematpath method '/'];
 if ~isdir(writefilepath)
     mkdir(writefilepath);
 end
-
 for nSig     =  [15 25 35 50 75]
     
     PSNR = [];
@@ -26,18 +25,24 @@ for nSig     =  [15 25 35 50 75]
         
         if nSig == 15
             load JointTraining_7x7_400_180x180_stage=5_sigma=15.mat;
+            10
         elseif nSig == 25
             load JointTraining_7x7_400_180x180_stage=5_sigma=25.mat;
+            25
         elseif nSig == 35
             load JointTraining_7x7_400_180x180_stage=5_sigma=35.mat;
+            35
         elseif nSig == 50
             load JointTraining_7x7_400_180x180_stage=5_sigma=50.mat;
+            50
         elseif nSig == 75
             load JointTraining_7x7_400_180x180_stage=5_sigma=75.mat;
+            75
         elseif nSig >75 
             load JointTraining_7x7_400_180x180_stage=5_sigma=75.mat;
+            75
         end
-        nSig
+        
         %% default setting
         filter_size = 7;
         m = filter_size^2 - 1;
@@ -65,8 +70,8 @@ for nSig     =  [15 25 35 50 75]
         end
         x_star = max(0, min(t(:), 255));
         im = reshape(x_star,R,C);
-        % im = I + (im - I)*100/60;
-        imname = sprintf([writefilepath method '_nSig' num2str(nSig)  '_' im_dir(i).name]);
+        im = I + (im - I)*100/60;
+        imname = sprintf([writefilepath method '/' '_nSig'_%s', nSig, im_dir(i).name);
         imwrite(im/255, imname);
         PSNR = [PSNR  csnr( im, I, 0, 0 )];
         SSIM  = [SSIM cal_ssim( im, I, 0, 0 )];
