@@ -22,7 +22,7 @@ for nSig     =  [15 25 35 50 75]
         I =   double(imread( fullfile(Original_image_dir, im_dir(i).name) ));
         [R,C] = size(I);
         randn('seed',0);
-        nI          =   I+ 60*randn(size(I));
+        nI          =   I+ nSig*randn(size(I));
         
         if nSig == 15
             load JointTraining_7x7_400_180x180_stage=5_sigma=15.mat;
